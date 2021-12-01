@@ -7,7 +7,9 @@ const jwt= require('express-jwt');
 router
 .post('/register',controller.postUser)
 .post('/login',controller.postLogin)
-.patch('/',jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),controller.updateUser)
+.post('/logout',jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),controller.postLogout)
+.patch('/update',jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),controller.postUpdate)
+.get('/update',jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),controller.getUpdate)
 .get("/",jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),controller.getUser)
-
+.delete('/',jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),controller.deleteUser)
 module.exports = router;

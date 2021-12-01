@@ -22,4 +22,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/recipes',recipesRouter);
 
+app.use((err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
+      res.status(401).redirect('/users/login')
+    }
+  });
+
 module.exports = app;

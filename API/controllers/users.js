@@ -11,13 +11,13 @@ module.exports={
             if (user){
                 throw new Error('This email is already taken !')
             }
-            if(!req.body.confirmPW===req.body.password){
+            if(req.body.confirmPW === req.body.password){
+                req.body.password=bcrypt.hashSync(req.body.password)
+                user=await User.create(req.body)
+            }
+            else{
                 throw new Error("Passwords don't match")
             }
-            req.body.password=bcrypt.hashSync(req.body.password);
-            user=await User.create(req.body);
-            
-
             res.send({
                 err: false,
                 message: "New user created",
@@ -46,18 +46,18 @@ module.exports={
                 first_name: user.first_name
             }
             const token=jwt.sign(payload,process.env.JWT_SECRET,{
-                expiresIn: "365d"
+                expiresIn: "7d"
             });
             res.send({
                 err:false,
                 message:"User logged in ",
-                token:token
+                token:token,
             });
         }
         catch(err){
             res.send({
                 err:true,
-                message:error.message
+                message:err.message
             });
         }
     },
@@ -77,15 +77,34 @@ module.exports={
             })
         }
     },
-    updateUser: async(req,res)=>{
+    postUpdate: async(req,res)=>{
         try{
-            await User.findByIdAndUpdate(req.user.id,req.body);
-            if (!req.body.confirmPW===req.body.password){
-                throw new Error ("Passwords don't match")
+            if (req.body.confirmPW===req.body.password){
+                req.body.password=bcrypt.hashSync(req.body.password)
+                await User.findByIdAndUpdate(req.user.id,req.body)
+                res.send({
+                    err:false,
+                    message: `Updated user ${req.body.first_name}`
+                })
             }
+            else{
+                throw new Error ("Passwords don't match");
+            }
+        }
+        catch(err){
             res.send({
-                err:false,
-                message: `Updated user ${req.body.first_name}`
+                err: true,
+                message: err.message
+            })
+        }
+    },
+    getUpdate: async(req,res)=>{
+        try{
+            user = await User.findById(req.user.id);
+            res.send({
+               err:false,
+               message:`User ${req.user.first_name}`,
+               user: user
             })
         }
         catch(err){
@@ -93,6 +112,45 @@ module.exports={
                 err: true,
                 message: err.message
             })
-    }
-}
+        }
+    },
+    deleteUser: async(req,res)=>{
+        try{
+            const payload = {
+                id: req.user.id,
+                email: req.user.email,
+                first_name: req.user.first_name
+              }
+              const token = jwt.sign(payload,process.env.JWT_SECRET, {
+                expiresIn: '1s'
+              })
+              await User.findByIdAndDelete(req.user.id)
+              res.send(token);
+        }
+        catch(err){
+            res.send({
+                err: true,
+                message: err.message
+            })
+        }
+    },
+    postLogout: (req, res) => {
+        try {
+          const payload = {
+            id: req.user.id,
+            email: req.user.email,
+            first_name: req.user.first_name
+          }
+          const token = jwt.sign(payload,process.env.JWT_SECRET, {
+            expiresIn: '1s'
+          });
+          res.send(token);
+        }
+        catch(err){
+            res.send({
+                err: true,
+                message: err.message
+            })
+        }
+      }
 }

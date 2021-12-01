@@ -37,6 +37,22 @@ module.exports={
             })
         }
     },
+    getMyRecipe: async (req,res)=>{
+        try{
+            recipe = await Recipe.findById(req.params.id)
+            res.send({
+                err:false,
+                message: `${recipe.title}`,
+                recipe: recipe
+            })
+        }
+        catch(err){
+            res.send({
+                err:true,
+                message: err.message
+            })
+        }
+    },
     postRecipe: async(req,res)=>{
         try{
             req.body.user= req.user.id;
@@ -54,16 +70,16 @@ module.exports={
             })
         }
     },
-    updateRecipe: async(req,res)=>{
+    postUpdate: async(req,res)=>{
         try{
             req.body.user=req.user.id;
             await Recipe.findByIdAndUpdate(req.params.id,req.body);
-            res.redirect('/recipes');
+            res.redirect('/recipes/myrecipes');
         }
         catch(err){
             res.send({
                 err: true,
-                message: err.message
+                message: err.message,
             })
         }
     },
@@ -147,5 +163,20 @@ module.exports={
                 message: err.message
             })
         }
+    },
+    deleteMyRecipe: async(req,res)=>{
+        try{
+              await Recipe.findByIdAndDelete(req.params.id)
+              res.send({
+                  err:false,
+                  message:"Recipe deleted"
+              });
+        }
+        catch(err){
+            res.send({
+                err: true,
+                message: err.message
+            })
+        }
     }
-    }
+}

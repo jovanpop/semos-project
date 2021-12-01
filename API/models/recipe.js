@@ -30,10 +30,9 @@ const recipeSchema = mongoose.Schema({
         default: 0,
         required: true
     },
-    user:
-        {
-            type:mongoose.Types.ObjectId,
-            ref: 'user'
+    user:{
+        type:mongoose.Types.ObjectId,
+        ref: 'user'
         }
 }, {timestamps: true});
 
