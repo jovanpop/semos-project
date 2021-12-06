@@ -5,7 +5,7 @@ module.exports={
     getHomePage: async(req,res)=>{
         try{
             let recipes = await Recipe.find();
-            let NewRecipes =  recipes.slice(-3);
+            let NewRecipes = recipes.sort((a,b)=> b.createdAt-a.createdAt).slice(0,3);
             let PopularRecipes = recipes.sort((a,b)=> b.views-a.views).slice(0,6);
             res.send({
                 err:false,
@@ -73,8 +73,12 @@ module.exports={
     postUpdate: async(req,res)=>{
         try{
             req.body.user=req.user.id;
-            await Recipe.findByIdAndUpdate(req.params.id,req.body);
-            res.redirect('/recipes/myrecipes');
+            recipe = await Recipe.findByIdAndUpdate(req.params.id,req.body);
+            res.send({
+                err:false,
+                message: `Recipe updated`,
+                recipe: recipe
+            })
         }
         catch(err){
             res.send({
