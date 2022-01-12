@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-let recipesRouter = require('./routes/recipes');
+const recipesRouter = require('./routes/recipes');
 const cors= require("cors");
 
 mongoose.connect(`mongodb+srv://jovan:${process.env.MONGO_PW}@semos.snt5k.mongodb.net/meals?retryWrites=true&w=majority`)

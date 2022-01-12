@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Button, Row, Col } from "react-bootstrap";
-import { Clock, EggFried, ChevronDoubleRight, Star } from "react-bootstrap-icons";
-import { api } from "../constants/ApiConstants";
+import { Container, Card, Row, Col } from "react-bootstrap";
+import { Clock, EggFried, Star } from "react-bootstrap-icons";
+import { api } from "../../constants/ApiConstants";
+import {ModalWindow} from './Modal';
 
 export function Breakfast() {
     const [Breakfast, setBreakfast] = useState([]);
@@ -33,7 +34,7 @@ export function Breakfast() {
                                     <Clock /> {recipe.preparation}
                                     <EggFried /> {recipe.people}
                                     <Star /> {recipe.views}
-                                    <Button href={`${api.root}/recipes/${recipe._id}`} style={{ position: "absolute", right: "2%", bottom: "2%" }} variant="success"><ChevronDoubleRight /></Button>
+                                    <ModalWindow recipe={recipe}/>
                                 </Card.Body>
                             </Card>
                         </Col>)

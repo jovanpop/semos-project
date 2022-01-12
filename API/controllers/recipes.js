@@ -59,7 +59,7 @@ module.exports={
             let recipe = await Recipe.create(req.body)
             res.send({
                 err:false,
-                message: `User ${req.user.first_name} created a new recipe`,
+                message: `New recipe created`,
                 recipe: recipe
             })
         }
@@ -154,7 +154,7 @@ module.exports={
     getRecipe: async(req,res)=>{
         try{
             recipe = await Recipe.findById(req.params.id);
-            await Recipe.findByIdAndUpdate(recipe.id,{views: recipe.views+1})
+            await Recipe.findByIdAndUpdate(req.params.id,{views: recipe.views+1})
             res.send({
                 err:false,
                 message: "Recipe",
