@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Row, Col, Form,Image } from "react-bootstrap";
+import { Container, Button, Row, Col, Form, Image } from "react-bootstrap";
 import { api } from "../../constants/ApiConstants";
+const bcrypt = require("bcryptjs");
 
 export function MyProfile() {
     const [first_name, setFirst_name] = useState("");
@@ -9,13 +10,32 @@ export function MyProfile() {
     const [birthday, setBirthday] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPW, setConfirmPW] = useState("");
+    const [image, setImage] = useState(null);
+
+    function handleImage(e) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            if (reader.readyState === 2) {
+                setImage(reader.result)
+            }
+            reader.readAsDataURL(e.target.files[0])
+        }
+    }
+
     function getUser() {
-        fetch(`${api.root}/users`,{
+        fetch(`${api.root}/users`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 401) {
+                    alert("Token expired");
+                    localStorage.removeItem("token");
+                    window.location = "/login";
+                }
+                return res.json();
+            })
             .then(data => {
                 setFirst_name(data.user.first_name)
                 setLast_name(data.user.last_name)
@@ -23,79 +43,114 @@ export function MyProfile() {
                 setBirthday(data.user.birthday)
                 setPassword(data.user.password)
                 setConfirmPW(data.user.password)
+                if (data.user.image === "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png") {
+                    setImage("https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png")
+                } else {
+                    setImage(`${api.root}/${data.user.image}`)
+                }
             }
             )
     }
     useEffect(() => {
         getUser();
-    }, [])
-    function updateUser() {
-        let user = {
-            first_name: first_name,
-            last_name: last_name,
-            email: email,
-            birthday: birthday,
-            password: password,
-            confirmPW: confirmPW
+    }, []);
+
+    function updateUser(e) {
+        e.preventDefault();
+
+        const formData = new FormData();
+        const imageUpload = document.querySelector('input[type="file"]');
+
+        formData.append('first_name', first_name);
+        formData.append('image', imageUpload.files[0]);
+        formData.append('last_name', last_name);
+        formData.append('email', email);
+        formData.append('password', bcrypt.hashSync(password));
+        formData.append('birthday', birthday);
+
+        if (confirmPW === password) {
+            try {
+                fetch(`${api.root}/users/update`, {
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    },
+                    body: formData
+                })
+                    .then(res => {
+                        if (res.status === 401) {
+                            alert("Token expired");
+                            localStorage.removeItem("token");
+                            window.location = "/login";
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (data.err === false) {
+                            alert(data.message);
+                            window.location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+            }
+            catch { alert("Ooops something went wrong") }
+        } else {
+            alert("Passwords don't match");
         }
-        fetch(`${api.root}/users/update`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            },
-            body: JSON.stringify(user)
-        })
-            .then(res => res.json())
-            .then(data => alert(data.message))
-            .catch(err => alert(err))
     }
+
     return (
         <Container>
-            <Row><h3 style={{ color: "green" }}>My Profile</h3></Row>
-            <Row style={{ marginTop: "7%" }}>
-                <Col style={{margin:"auto",marginTop:"0",marginRight:"5%"}} sm={2}>
-                    <Image src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" style={{width:"70%",margin:"auto"}} roundedCircle />
-                    <Row>
-                    <Button style={{width:"70%",marginTop:"10%"}} variant="outline-secondary">Change Avatar</Button>
-                    </Row>
-                </Col>
-                <Col>
-                    <Form onSubmit={updateUser} style={{ width: "100%" }} >
-                        <Row sm={3} className="mb-3" >
-                            <Col>
+            <Row><h2 style={{ color: "green" }}>My Profile</h2></Row>
+            <Form onSubmit={updateUser} >
+                <Row style={{ marginTop: "7%" }} >
+                    <Col sm={2}>
+                        <Row style={{ height: "38%", width: "85%" }} >
+                            <Image src={image} style={{ height: "100%", width: "100%" }} roundedCircle />
+                        </Row>
+                        <Row style={{ marginTop: "15%", width: "85%" }}>
+                            <Button onClick={() => document.getElementById("fileinput").click()} variant="outline-secondary">CHANGE AVATAR</Button>
+                            <Form.Control onChange={handleImage} type="file" accept="image/*" id="fileinput" style={{ display: "none" }} />
+                        </Row>
+                    </Col>
+                    <Col style={{ marginLeft: "4%", width: "55%" }} sm={6}>
+                        <Row className="mb-4" >
+                            <Col  >
                                 <Form.Label>First Name</Form.Label>
-                                <Form.Control onChange={(e) => setFirst_name(e.target.value)} value={first_name} type="text" />
+                                <Form.Control required onChange={(e) => setFirst_name(e.target.value)} value={first_name} type="text" />
                             </Col>
-                            <Col>
+                            <Col  >
                                 <Form.Label>Last Name</Form.Label>
-                                <Form.Control onChange={(e) => setLast_name(e.target.value)} value={last_name} type="text" />
+                                <Form.Control required onChange={(e) => setLast_name(e.target.value)} value={last_name} type="text" />
                             </Col>
                         </Row>
-                        <Row sm={3} className="mb-3">
-                            <Col>
+                        <Row className="mb-4">
+                            <Col  >
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control onChange={(e) => setEmail(e.target.value)} value={email} type="email" />
+                                <Form.Control required onChange={(e) => setEmail(e.target.value)} value={email} type="email" />
                             </Col>
-                            <Col>
+                            <Col   >
                                 <Form.Label>Birthday</Form.Label>
-                                <Form.Control onChange={(e) => setBirthday(e.target.value)} value={birthday} type="date" />
+                                <Form.Control required onChange={(e) => setBirthday(e.target.value)} value={birthday} type="date" />
                             </Col>
                         </Row>
-                        <Row sm={3} className="mb-4">
-                            <Col>
+                        <Row className="mb-4">
+                            <Col  >
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" />
+                                <Form.Control required onChange={(e) => setPassword(e.target.value)} value={password} type="password" />
                             </Col>
-                            <Col>
+                            <Col  >
                                 <Form.Label>Repeat password</Form.Label>
-                                <Form.Control onChange={(e) => setConfirmPW(e.target.value)} value={confirmPW} type="password" />
+                                <Form.Control required onChange={(e) => setConfirmPW(e.target.value)} value={confirmPW} type="password" />
                             </Col>
+                            <Row style={{ margin: "auto", marginTop: "5%" }} sm={5}>
+                                <Button type="submit" variant="success">SAVE</Button>
+                            </Row>
                         </Row>
-                        <Button type="submit" variant="success">Save</Button>
-                    </Form>
-                </Col>
-            </Row>
+                    </Col>
+                </Row>
+            </Form>
         </Container>
     )
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes,Navigate } from "react-router-dom";
 import { Navigation } from './partials/Nav';
 import { Footer } from "./partials/Footer";
 import { Home } from './recipes/Home';
@@ -14,28 +14,30 @@ import { Login } from "./users/Login";
 import { Register } from "./users/Register";
 import { MyProfile } from './users/MyProfile';
 import { Container } from "react-bootstrap";
+import "../stylesheets/project.css";
+const token=localStorage.getItem("token");
 
 function App() {
   return (
-    <div style={{backgroundColor:"rgb(240, 240 , 225)"}}>
-    <Container >
-        <Navigation/>
+    <div id="body">
+      <Container >
+        <Navigation />
         <Routes >
           <Route path="/" element={<Home />} />
           <Route path="/breakfast" element={<Breakfast />} />
           <Route path="/brunch" element={<Brunch />} />
           <Route path="/lunch" element={<Lunch />} />
           <Route path="/dinner" element={<Dinner />} />
-          <Route path="/create" element={<CreateRecipe/>} />
-          <Route path="/myrecipes" element={<MyRecipes />} />
-          <Route path="/myrecipes/:id" element={<MyRecipe />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/myprofile" element={<MyProfile />} />
+          <Route path="/create" element={token ? <CreateRecipe/> : <Navigate to="/login"/>} />
+          <Route path="/myrecipes" element={token ? <MyRecipes/> : <Navigate to="/login" />} />
+          <Route path="/myrecipes/:id" element={token ? <MyRecipe/> : <Navigate to="/login" />} />
+          <Route path="/login" element={token ? <Navigate to="/myprofile"/> : <Login />} />
+          <Route path="/register" element={token ? <Navigate to="/myprofile"/> : <Register />} />
+          <Route path="/myprofile" element={token ? <MyProfile/> : <Navigate to="/login" />} />
         </Routes>
       </Container>
-      <Footer/>
-      </div>
+      <Footer />
+    </div>
   );
 }
 

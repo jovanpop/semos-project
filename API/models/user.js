@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt=require ('bcryptjs');
 
 const userScema = mongoose.Schema({
     first_name:{
@@ -21,6 +22,9 @@ const userScema = mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    image:{
+        type:String
     }
 },{timestamps:true});
 

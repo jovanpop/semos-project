@@ -26,7 +26,7 @@ app.use('/recipes',recipesRouter);
 
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
-      res.status(401).redirect('/users/login')
+      res.status(401).send("Please Login, sesion expired");
     }
   });
 

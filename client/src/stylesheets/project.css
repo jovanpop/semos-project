@@ -1,0 +1,17 @@
+#inputField {
+    background-color: rgb(240, 240 , 238);
+    border: 2px solid rgb(193, 193, 193);
+}
+
+#greenButton{
+    background-color:  rgb(157, 194, 22);
+    border: none;
+}
+#body{
+    background-color: rgb(245, 245 , 240);
+    font-weight: bold;
+    color: orange;
+}
+#greenText{
+    color: rgb(157, 196, 16);
+}
