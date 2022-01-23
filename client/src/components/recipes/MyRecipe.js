@@ -46,7 +46,7 @@ export function MyRecipe() {
                 setContent(data.recipe.content)
                 setDescription(data.recipe.description)
                 if (data.recipe.image === "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900") {
-                    setImage("https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900")
+                    setImage(data.recipe.image)
                 } else {
                     setImage(`${api.root}/${data.recipe.image}`)
                 }
@@ -101,29 +101,28 @@ export function MyRecipe() {
     return (
         <Container>
             <Row>
-                <Col><h2 style={{ color: "green" }}>My Recipes</h2></Col>
-                <Col style={{ textAlign: "end" }}><a href="/myrecipes"><h2><IoArrowUndoCircle style={{ color: "orange", fontSize: "140%" }} /></h2></a></Col>
+                <Col><h2 style={{ marginRight: "-20px" }} id="pageTitle">My Recipes</h2></Col>
+                <Col style={{ textAlign: "end", width: "5%" }} sm={1}><a href="/myrecipes"><IoArrowUndoCircle style={{ color: "orange", fontSize: "320%", marginTop: "-5px" }} /></a></Col>
             </Row>
             <Form onSubmit={updateRecipe} >
                 <Row style={{ marginTop: "7%" }}>
                     <Col sm={2}>
                         <Row style={{ height: "34%", width: "130%" }} >
                             <Form.Label>Recipe Image</Form.Label>
-                            <Image  src={image} style={{height: "100%", width: "100%", borderRadius: "7%" }} />
-                            <Button onClick={() => document.getElementById("fileinput").click()} style={{ width: "90%", margin: "auto", marginTop: "10%" }} variant="outline-secondary">UPLOAD IMAGE</Button>
+                            <Image src={image} style={{ height: "100%", width: "100%", borderRadius: "7%" }} />
+                            <Button onClick={() => document.getElementById("fileinput").click()} style={{ width: "90%", margin: "auto", marginTop: "10%", fontSize: "14px" }} variant="outline-secondary">UPLOAD IMAGE</Button>
                             <Form.Control type="file" onChange={handleImage} accept="image/*" id="fileinput" style={{ display: "none" }} />
                         </Row>
                     </Col>
                     <Col style={{ marginLeft: "4%", width: "48%" }} sm={5}>
                         <Row className="mb-4">
                             <Form.Label >Recipe Title</Form.Label>
-                            <Form.Control id="inputField" placeholder="Homemade Pizza" onChange={(e) => setTitle(e.target.value)} value={title} type="text" style={{ width: "96%", margin: "auto" }} />
+                            <Form.Control id="inputField" onChange={(e) => setTitle(e.target.value)} value={title} type="text" style={{ width: "96%", margin: "auto" }} />
                         </Row>
                         <Row className="mb-4">
                             <Col>
                                 <Form.Label>Category</Form.Label>
                                 <Form.Select id="inputField" value={category} onChange={(e) => setCategory(e.target.value)} aria-label="Default select example">
-
                                     <option value="Breakfast">Breakfast</option>
                                     <option value="Brunch">Brunch</option>
                                     <option value="Lunch">Lunch</option>
@@ -132,11 +131,11 @@ export function MyRecipe() {
                             </Col>
                             <Col>
                                 <Form.Label>Preparation Time</Form.Label>
-                                <Form.Control id="inputField" placeholder="45" onChange={(e) => setPreparation(e.target.value)} value={preparation} type="number" />
+                                <Form.Control id="inputField" onChange={(e) => setPreparation(e.target.value)} value={preparation} type="number" />
                             </Col>
                             <Col>
                                 <Form.Label>No. People</Form.Label>
-                                <Form.Control id="inputField" placeholder="4" onChange={(e) => setPeople(e.target.value)} value={people} type="number" />
+                                <Form.Control id="inputField" onChange={(e) => setPeople(e.target.value)} value={people} type="number" />
                             </Col>
                         </Row>
                         <Row className="mb-4">
@@ -144,27 +143,27 @@ export function MyRecipe() {
                                 <Form.Label>Short Description</Form.Label>
                                 <Form.Control id="inputField"
                                     as="textarea"
-                                    placeholder=""
                                     rows="4"
                                     value={content}
-                                    style={{resize: "none"}}
+                                    style={{ resize: "none" }}
                                     onChange={(e) => setContent(e.target.value)}
+                                    type="text"
                                 />
                             </Col>
                             <Row style={{ margin: "auto", marginTop: "7%" }} sm={5}>
-                                <Button type="submit" variant="success">SAVE</Button>
+                                <Button style={{ width: "20%" }} type="submit" id="greenButton" variant="success">SAVE</Button>
                             </Row>
                         </Row>
                     </Col>
-                    <Col sm={4} style={{ marginLeft: "1%",width:"30%" }}>
+                    <Col sm={4} style={{ marginLeft: "1%", width: "30%" }}>
                         <Form.Label>Recipe</Form.Label>
                         <Form.Control id="inputField"
                             as="textarea"
-                            placeholder=""
                             rows="12"
                             value={description}
-                            style={{resize: "none"}}
+                            style={{ resize: "none" }}
                             onChange={(e) => setDescription(e.target.value)}
+                            type="text"
                         />
                     </Col>
                 </Row>

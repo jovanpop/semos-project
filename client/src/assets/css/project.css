@@ -1,0 +1,99 @@
+#inputField {
+    background-color: rgb(240, 240 , 238);
+    border: 1px solid rgb(138, 138, 138);
+    color: darkgray;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+}
+#inputLabel{
+    font-family: 'Roboto Slab', serif;
+}
+#confirmPW{
+    background-color: rgb(240, 240 , 238);
+    border: 1px solid rgb(138, 138, 138);
+    color: rgb(104, 104, 104);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+}
+#greenButton{
+    background-color:  rgb(157, 194, 22);
+    border: none;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
+    font-size: 13px;
+    font-weight: bold;
+    height: 110%;
+    width: 120%;
+}
+#body{
+    background-color: rgb(245, 245 , 240);
+    font-weight: bold;
+    color: orange;
+}
+#greenText{
+    color: rgb(157, 196, 16);
+}
+#links{
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+#loginButton{
+    background-color:  transparent;
+    color: darkgray;
+    border: 1px solid  darkgray;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 14px;
+    width: 125%;
+    height: 110%;
+    margin-left: -25%;
+}
+#container{
+    font-family: 'Roboto Slab', serif;
+}
+#footer{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+}
+#footer #footerLinks{
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 13px;
+}
+#pageTitle{
+    font-family: 'Roboto Slab', serif;
+    font-weight: 600;
+    color: rgb(157, 196, 16);
+}
+h2 {
+    display: flex;
+    align-items: baseline;
+    text-align: center;
+    margin-right: -15px;
+}
+h2:after {
+    content: '';
+    border-top: 1px solid;
+    flex: 1;
+    margin-left: 10px;
+    color: lightgray;
+}
+input[type="text"]::-webkit-input-placeholder {
+    color: darkgray;
+  }
+input[type="password"]::-webkit-input-placeholder {
+    color: darkgray;
+  }
+  input[type="email"]::-webkit-input-placeholder {
+    color: darkgray;
+  }
+  input[type="number"]::-webkit-input-placeholder {
+    color: darkgray;
+  }
+
+

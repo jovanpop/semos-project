@@ -11,6 +11,7 @@ module.exports = {
             if (user) {
                 throw new Error('This email is already taken !')
             } else {
+                req.body.image = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
                 await User.create(req.body)
             }
             res.send({
@@ -72,6 +73,7 @@ module.exports = {
     postUpdate: async (req, res) => {
         try {
             user=await User.findById(req.user.id)
+            req.body.email=req.body.email.toLowerCase();
             if(req.file) {
                 req.body.image = `images/users/${req.file.filename}`;
                 if(req.body.image !== user.image && user.image !== "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" ){

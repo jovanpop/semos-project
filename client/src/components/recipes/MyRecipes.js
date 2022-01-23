@@ -60,8 +60,8 @@ export function MyRecipes() {
     return (
         <Container>
             <Row>
-                <Col><h2 style={{ color: "green" }}>My Recipes</h2></Col>
-                <Col style={{ textAlign: "end" }}><a href="/create"><h2><BsFillPlusCircleFill style={{ color: "orange",fontSize:"115%" }} /></h2></a></Col>
+                <Col><h2 id="pageTitle">My Recipes</h2></Col>
+                <Col style={{ textAlign: "end",width:"5%"}} sm={1}><a href="/create"><BsFillPlusCircleFill style={{ color: "orange",fontSize:"260%"}} /></a></Col>
             </Row>
             <Row style={{ marginTop: "3%" }}>
                 <Table >
