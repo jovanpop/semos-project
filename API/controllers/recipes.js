@@ -57,7 +57,7 @@ module.exports = {
         try {
             req.body.user = req.user.id;
             if(req.file){req.body.image = `images/recipes/${req.file.filename}`}
-            else {req.body.image = "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900"};
+            else {req.body.image = "/images/recipes/recipe.png"};
             let recipe = await Recipe.create(req.body)
             res.send({
                 err: false,
@@ -78,12 +78,12 @@ module.exports = {
             recipe= await Recipe.findById(req.params.id);
             if(req.file) {
                 req.body.image = `images/recipes/${req.file.filename}`;
-                recipeByImage=await Recipe.find({image: recipe.image});
-                if(recipeByImage.length === 1 && req.body.image !== recipe.image && recipe.image !== "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900" ){
+                if(recipe.image !== "/images/recipes/recipe.png" ){
                     fs.unlinkSync(`public/${recipe.image}`)
                 }
             }else{
-            req.body.image = "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900"}
+                    req.body.image = recipe.image
+            }
             await Recipe.findByIdAndUpdate(req.params.id,req.body)
             res.send({
                 err: false,
@@ -182,8 +182,7 @@ module.exports = {
     deleteMyRecipe: async (req, res) => {
         try {
             recipe = await Recipe.findById(req.params.id);
-            recipeByImage = await Recipe.find({image: recipe.image});
-            if (recipeByImage.length === 1 && recipe.image !== "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900")
+            if (recipe.image !== "/images/recipes/recipe.png")
             {fs.unlinkSync(`public/${recipe.image}`)};
             await Recipe.deleteOne({_id:req.params.id})
             res.send({

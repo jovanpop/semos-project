@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Row, Col } from "react-bootstrap";
+import { Container, Card, Row, Col, Image } from "react-bootstrap";
 import { BsClock, GiMeal, BsStar } from "react-icons/all";
 import { api } from "../../constants/ApiConstants";
-import {ModalWindow} from './Modal';
+import { ModalWindow } from './Modal';
 
 export function Lunch() {
     const [Lunch, setLunch] = useState([]);
@@ -18,28 +18,29 @@ export function Lunch() {
         getLunch();
     }, []);
     return (
-        <Container>
-            <Row>
-                <Row><h3 style={{ color: "green", marginBottom: "3%" }}>Lunch</h3></Row>
-                {Lunch.map(recipe => {
-                    return (
-                        <Col xs={4} style={{ marginBottom: "4%" }} key={recipe._id}>
-                            <Card style={{ width: '24rem', borderRadius: "2%" }}>
-                                <Card.Img style={{ borderTopLeftRadius: "2%", borderTopRightRadius: "2%" }} variant="top" src="https://media.istockphoto.com/photos/cheesy-pepperoni-pizza-picture-id938742222?k=20&m=938742222&s=612x612&w=0&h=X5AlEERlt4h86X7U7vlGz3bDaDDGQl4C3MuU99u2ZwQ=" />
-                                <h6 style={{position:"absolute",left:"5%", top:"4%",backgroundColor:"green",borderRadius:"20%/50%",padding:"1%",color:"white",opacity:"0.8",paddingLeft:"2%",paddingRight:"2%",paddingBottom:"1.5%"}}>{recipe.category.toLowerCase()}</h6>
-                                <Card.Body>
-                                    <Card.Title>{recipe.title}</Card.Title>
-                                    <Card.Text>
-                                        {recipe.content}
-                                    </Card.Text>
-                                    <BsClock /> {recipe.preparation}
-                                    <GiMeal /> {recipe.people}
-                                    <BsStar /> {recipe.views}
-                                    <ModalWindow recipe={recipe}/>
-                                </Card.Body>
-                            </Card>
-                        </Col>)
-                })}
+        <Container fluid="true">
+            <Row><h2 id="pageTitle" style={{ marginBottom: "4%" }}>Lunch</h2></Row>
+            <Row style={{ width: "105%" }} md={3} className="g-5">
+                {Lunch.map(recipe => (
+                    <Col key={recipe._id} style={{ marginBottom: "1%" }}>
+                        <Card id="card" >
+                            <Card.Img /><Image id="cardImage" variant="top" src={`${api.root}/${recipe.image}`} />
+                            <Card.Body id="cardBody">
+                                <h6 id="categoryText">{recipe.category.toLowerCase()}</h6>
+                                <Card.Title > <textarea id="cardTitle" disabled rows={1} value={recipe.title}></textarea></Card.Title>
+                                <Card.Text id="cardText">
+                                    <textarea value={recipe.content} disabled rows={4} id="textarea"></textarea>
+                                </Card.Text>
+                                <Card.Footer id="cardFooter">
+                                    <span style={{ fontSize: "13px", marginRight: "2%" }}> <BsClock id="cardIcons" /> {recipe.preparation} min </span>
+                                    <span style={{ fontSize: "13px", marginRight: "2%" }}> <GiMeal id="cardIcons" /> {recipe.people} persons </span>
+                                    <span style={{ fontSize: "13px" }}> <BsStar id="cardIcons" /> {recipe.views} </span>
+                                    <ModalWindow recipe={recipe} />
+                                </Card.Footer>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
             </Row>
         </Container>
     )

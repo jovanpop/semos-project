@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Container, Button, Row, Col, Form } from "react-bootstrap";
 import { api } from "../../constants/ApiConstants";
+import { PopAlert } from "../partials/Alert";
 const bcrypt = require("bcryptjs");
-
 
 export function Register() {
     const [first_name, setFirst_name] = useState("");
@@ -11,9 +11,13 @@ export function Register() {
     const [birthday, setBirthday] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPW, setConfirmPW] = useState("");
-    window.onload=()=>{
-        const pastedText=document.getElementById("confirmPW");
-        pastedText.onpaste=(e)=>{e.preventDefault()}
+    const [Alert, setAlert] = useState(false);
+    const [alertMsg, setAlertMsg] = useState("");
+    const [error, setError] = useState(false);
+
+    window.onload = () => {
+        const pastedText = document.getElementById("confirmPW");
+        pastedText.onpaste = (e) => { e.preventDefault() }
     }
 
     function postUser(e) {
@@ -36,25 +40,46 @@ export function Register() {
                 .then(res => res.json())
                 .then(data => {
                     if (data.err === false) {
-                        alert(data.message)
+                        setError(false);
+                        setAlert(true);
+                        setAlertMsg(data.message);
                         const redirect = () => {
                             window.location = "/login"
                         }
-                        redirect()
+                        setTimeout(() => { redirect() }, 500)
                     } else {
-                        alert(data.message)
+                        if (data.message === "This email is already taken !") {
+                            setError(true);
+                            setAlert(true);
+                            setAlertMsg("Email");
+                            setTimeout(() => { setAlert(false); setError(false) }, 1500);
+                        } else {
+                            setError(true);
+                            setAlert(true);
+                            setAlertMsg(data.message);
+                        }
                     }
                 })
-                .catch(err => alert(err))
-        } else { alert("Passwords don't match") }
+                .catch(err => {
+                    setError(true);
+                    setAlert(true);
+                    setAlertMsg(err);
+                })
+        } else {
+            setError(true);
+            setAlert(true);
+            setAlertMsg("Password");
+            setTimeout(() => { setAlert(false); setError(false) }, 1500);
+        }
     }
     return (
-        <Container id="container">
+        <Container fluid="true" id="container">
+            <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
             <Row ><h2 id="pageTitle">Create Account</h2></Row>
-            <Row style={{ marginTop: "7%" }}>
+            <Row fluid="true" style={{ marginTop: "7%" }}>
                 <Col style={{ paddingRight: "8%" }} xs={5}>
-                <h1 style={{fontWeight:"bold"}}>Create your <div style={{color:"graytext",fontWeight:"600"}}>account</div></h1>
-                <div style={{color:"darkgray",fontWeight:"normal",fontSize:"18px",marginTop:"5%"}}>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias aut, repellat ipsum facere voluptate dicta obcaecati deserunt nobis suscipit eaque?
+                    <h1 style={{ fontWeight: "bold" }}>Create your <div style={{ color: "graytext", fontWeight: "600" }}>account</div></h1>
+                    <div style={{ color: "darkgray", fontWeight: "normal", fontSize: "18px", marginTop: "5%" }}>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias aut, repellat ipsum facere voluptate dicta obcaecati deserunt nobis suscipit eaque?
                         Lorem, ipsum dolor sit ametaaaaa asd asd consectetur aaaaaaaaaa aaaaaaaa adipisicing elit. Molestias aut, repellat ipsum facere voluptate dicta obcaecati deserunt nobis suscipit eaque?
                     </div>
                 </Col>
@@ -63,34 +88,34 @@ export function Register() {
                         <Row className="mb-4">
                             <Col>
                                 <Form.Label id="inputLabel">First Name</Form.Label>
-                                <Form.Control id="inputField" required onChange={(e) => setFirst_name(e.target.value)} value={first_name} placeholder="John" type="text" />
+                                <Form.Control id="inputFieldFN" required onChange={(e) => setFirst_name(e.target.value)} value={first_name} placeholder="John" type="text" />
                             </Col>
                             <Col>
                                 <Form.Label id="inputLabel">Last Name</Form.Label>
-                                <Form.Control id="inputField" required onChange={(e) => setLast_name(e.target.value)} value={last_name} placeholder="Smith" type="text" />
+                                <Form.Control id="inputFieldLN" required onChange={(e) => setLast_name(e.target.value)} value={last_name} placeholder="Smith" type="text" />
                             </Col>
                         </Row>
                         <Row className="mb-4">
                             <Col>
                                 <Form.Label id="inputLabel">Email</Form.Label>
-                                <Form.Control id="inputField" required onChange={(e) => setEmail(e.target.value)} value={email} type="email" placeholder="john@smith.com" />
+                                <Form.Control id="inputFieldEmail" required onChange={(e) => setEmail(e.target.value)} value={email} type="email" placeholder="john@smith.com" />
                             </Col>
                             <Col>
                                 <Form.Label id="inputLabel">Birthday</Form.Label>
-                                <Form.Control id="inputField" required onChange={(e) => setBirthday(e.target.value)} value={birthday} type="date" />
+                                <Form.Control id="inputFieldBD" required onChange={(e) => setBirthday(e.target.value)} value={birthday} type="date" />
                             </Col>
                         </Row>
                         <Row className="mb-4">
                             <Col>
                                 <Form.Label id="inputLabel">Password</Form.Label>
-                                <Form.Control id="inputField" required onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="*****" />
+                                <Form.Control id="inputFieldPW" autoComplete="new-password" required onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="*****" />
                             </Col>
                             <Col>
                                 <Form.Label id="inputLabel">Repeat password</Form.Label>
                                 <Form.Control id="confirmPW" required onChange={(e) => setConfirmPW(e.target.value)} value={confirmPW} type="password" placeholder="*****" />
                             </Col>
                         </Row>
-                        <Button type="submit" style={{width:"32%",marginTop:"3%"}} id="greenButton" variant="success">CREATE ACCOUNT</Button>
+                        <Button type="submit" style={{ fontSize: "13px", width: "32%", marginTop: "4%" }} id="greenButton" variant="success">CREATE ACCOUNT</Button>
                     </Form>
                 </Col>
             </Row>

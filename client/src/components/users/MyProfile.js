@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Row, Col, Form, Image} from "react-bootstrap";
+import { Container, Button, Row, Col, Form, Image } from "react-bootstrap";
 import { api } from "../../constants/ApiConstants";
+import { PopAlert } from "../partials/Alert";
 const bcrypt = require("bcryptjs");
 
 export function MyProfile() {
@@ -8,15 +9,18 @@ export function MyProfile() {
     const [last_name, setLast_name] = useState("");
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
-    const [password,setPassword]=useState("");
-    const [confirmPW,setConfirmPW]= useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPW, setConfirmPW] = useState("");
     const [image, setImage] = useState(null);
+    const [Alert, setAlert] = useState(false);
+    const [alertMsg, setAlertMsg] = useState("");
+    const [error, setError] = useState(false);
 
-    window.onload=()=>{
-        const pastedText=document.getElementById("confirmPW");
-        pastedText.onpaste=(e)=>{e.preventDefault()}
+    window.onload = () => {
+        const pastedText = document.getElementById("confirmPW");
+        pastedText.onpaste = (e) => { e.preventDefault() }
     }
-        
+
     function handleImage(e) {
         const reader = new FileReader();
         reader.onload = () => {
@@ -35,28 +39,39 @@ export function MyProfile() {
         })
             .then(res => {
                 if (res.status === 401) {
-                    alert("Token expired");
+                    setError(true);
+                    setAlert(true);
+                    setAlertMsg("Token");
                     localStorage.removeItem("token");
-                    window.location = "/login";
+                } else {
+                    return res.json();
                 }
-                return res.json();
             })
             .then(data => {
-                setFirst_name(data.user.first_name)
-                setLast_name(data.user.last_name)
-                setEmail(data.user.email)
-                setBirthday(data.user.birthday)
-                if (data.user.image === "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png") {
-                    setImage(data.user.image)
-                } else {
-                    setImage(`${api.root}/${data.user.image}`)
+                if (data) {
+                    if (data.err === false) {
+                        setFirst_name(data.user.first_name);
+                        setLast_name(data.user.last_name);
+                        setEmail(data.user.email);
+                        setBirthday(data.user.birthday);
+                        setImage(`${api.root}/${data.user.image}`);
+                    } else {
+                        setError(true);
+                        setAlert(true);
+                        setAlertMsg(data.message);
+                    }
                 }
             }
             )
+            .catch(err => {
+                setError(true);
+                setAlert(true);
+                setAlertMsg(err);
+            })
     }
     useEffect(() => {
         getUser();
-    },[])
+    }, [])
 
     function updateUser(e) {
         e.preventDefault();
@@ -70,8 +85,8 @@ export function MyProfile() {
         formData.append('email', email);
         formData.append('birthday', birthday);
         if (confirmPW === password) {
-            if(password !== ""){
-            formData.append('password',bcrypt.hashSync(password));
+            if (password !== "") {
+                formData.append('password', bcrypt.hashSync(password));
             }
             try {
                 fetch(`${api.root}/users/update`, {
@@ -83,74 +98,102 @@ export function MyProfile() {
                 })
                     .then(res => {
                         if (res.status === 401) {
-                            alert("Token expired");
+                            setError(true);
+                            setAlert(true);
+                            setAlertMsg("Token");
                             localStorage.removeItem("token");
-                            window.location = "/login";
+                        } else {
+                            return res.json();
                         }
-                        return res.json();
                     })
                     .then(data => {
-                        if (data.err === false) {
-                            alert(data.message);
-                            window.location.reload();
-                        } else {
-                            alert(data.message);
+                        if (data) {
+                            if (data.err === false) {
+                                setAlert(true);
+                                setError(false);
+                                setAlertMsg(data.message);
+                            } else {
+                                if (data.message.slice(0,37) === "E11000 duplicate key error collection") {
+                                    setError(true);
+                                    setAlert(true);
+                                    setAlertMsg("Email");
+                                    setTimeout(() => { setAlert(false); setError(false) }, 1500);
+                                }
+                                else {
+                                    setError(true);
+                                    setAlert(true);
+                                    setAlertMsg(data.message);
+                                }
+                            }
                         }
                     })
+                    .catch(err => {
+                        setError(true);
+                        setAlert(true);
+                        setAlertMsg(err);
+                    })
             }
-            catch { alert("Ooops something went wrong") }
+            catch {
+                setError(true);
+                setAlert(true);
+                setAlertMsg("Ooops something went wrong");
+            }
         } else {
-            alert("Passwords don't match");
+            setError(true);
+            setAlert(true);
+            setAlertMsg("Password");
+            setTimeout(() => { setAlert(false); setError(false) }, 1500)
         }
     }
 
     return (
-        <Container >
+        <Container fluid="true" >
+            <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
             <Row><h2 id="pageTitle">My Profile</h2></Row>
             <Form onSubmit={updateUser} >
                 <Row style={{ marginTop: "7%" }} >
                     <Col sm={2}>
-                        <Row style={{ height: "38%", width: "85%" }} >
+                        <Row style={{ height: "35%", width: "75%", marginLeft: "2%", marginTop: "-3%" }} >
                             <Form.Label></Form.Label>
-                            <Image src={image} style={{ height: "100%", width: "100%"}} roundedCircle/>
+                            <Image src={image} style={{ height: "100%", width: "100%", objectFit: "cover" }} roundedCircle />
                         </Row>
-                        <Row style={{ marginTop: "15%", width: "85%" }}>
-                            <Button onClick={() => document.getElementById("fileinput").click()} style={{fontSize:"14px"}} variant="outline-secondary">CHANGE AVATAR</Button>
+                        <Row style={{ margin: "21%  0  0  -3%", width: "85%", height: "40%" }}>
+                            <Button id="uploadButton" onClick={() => document.getElementById("fileinput").click()} variant="outline-secondary">CHANGE AVATAR</Button>
                             <Form.Control id="fileinput" onChange={handleImage} type="file" accept="image/*" style={{ display: "none" }} />
                         </Row>
                     </Col>
-                    <Col style={{ marginLeft: "4%", width: "52%" }} sm={6}>
+                    <Col style={{ marginLeft: "4%", width: "53%" }} sm={6}>
                         <Row className="mb-4" >
                             <Col  >
                                 <Form.Label id="inputLabel">First Name</Form.Label>
-                                <Form.Control required id="inputField" onChange={(e) => setFirst_name(e.target.value)} value={first_name} type="text" />
+                                <Form.Control required id="inputFieldFN" onChange={(e) => setFirst_name(e.target.value)} value={first_name} type="text" />
                             </Col>
                             <Col  >
                                 <Form.Label id="inputLabel">Last Name</Form.Label>
-                                <Form.Control id="inputField" required onChange={(e) => setLast_name(e.target.value)} value={last_name} type="text" />
+                                <Form.Control id="inputFieldLN" required onChange={(e) => setLast_name(e.target.value)} value={last_name} type="text" />
                             </Col>
                         </Row>
                         <Row className="mb-4">
                             <Col  >
                                 <Form.Label id="inputLabel">Email</Form.Label>
-                                <Form.Control id="inputField" required onChange={(e) => setEmail(e.target.value)} value={email} type="email" />
+                                <Form.Control id="inputFieldEmail" required onChange={(e) => setEmail(e.target.value)} value={email} type="email" />
                             </Col>
                             <Col   >
                                 <Form.Label id="inputLabel">Birthday</Form.Label>
-                                <Form.Control id="inputField" required onChange={(e) => setBirthday(e.target.value)} value={birthday} type="date" />
+                                <Form.Control id="inputFieldBD" required onChange={(e) => setBirthday(e.target.value)} value={birthday} type="date" />
                             </Col>
                         </Row>
                         <Row className="mb-4">
                             <Col  >
                                 <Form.Label id="inputLabel">Password</Form.Label>
-                                <Form.Control id="inputField" onChange={(e) => setPassword(e.target.value)} placeholder="******" value={password} type="password" />
+                                <Form.Control id="inputFieldPW" autoComplete="new-password" onChange={(e) => setPassword(e.target.value)} placeholder="******" value={password} type="password" />
                             </Col>
                             <Col  >
                                 <Form.Label id="inputLabel">Repeat password</Form.Label>
                                 <Form.Control id="confirmPW" onChange={(e) => setConfirmPW(e.target.value)} value={confirmPW} placeholder="******" type="password" />
                             </Col>
                             <Row style={{ margin: "auto", marginTop: "5%" }} sm={5}>
-                                <Button type="submit" id="greenButton" style={{width:"20%"}} variant="success">SAVE</Button>
+                                <Button type="submit" id="greenButton" style={{ width: "20%" }} variant="success">SAVE</Button>
                             </Row>
                         </Row>
                     </Col>

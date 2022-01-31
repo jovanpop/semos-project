@@ -11,7 +11,7 @@ module.exports = {
             if (user) {
                 throw new Error('This email is already taken !')
             } else {
-                req.body.image = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+                req.body.image = "/images/users/avatar.png";
                 await User.create(req.body)
             }
             res.send({
@@ -39,7 +39,7 @@ module.exports = {
                 email: user.email,
                 first_name: user.first_name
             }
-            token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+            token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2m" });
             res.send({
                 err: false,
                 message: "User logged in ",
@@ -72,26 +72,27 @@ module.exports = {
     },
     postUpdate: async (req, res) => {
         try {
-            user=await User.findById(req.user.id)
-            req.body.email=req.body.email.toLowerCase();
-            if(req.file) {
+            user = await User.findById(req.user.id)
+            req.body.email = req.body.email.toLowerCase();
+            if (req.file) {
                 req.body.image = `images/users/${req.file.filename}`;
-                if(req.body.image !== user.image && user.image !== "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" ){
-                    fs.unlinkSync(`public/${user.image}`)
-                }
-            }else{
-            req.body.image = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"}
-                user = await User.findByIdAndUpdate(req.user.id, req.body)
-                res.send({
-                    err: false,
-                    message: `Updated user`
-                })
+            } else {
+                req.body.image = user.image
+            }
+            user = await User.findByIdAndUpdate(req.user.id, req.body)
+            res.send({
+                err: false,
+                message: `Updated user`
+            })
         }
         catch (err) {
-            res.send({
-                err: true,
-                message: err.message
-            })
+            if (req.file){
+                fs.unlinkSync(`public/images/users/${req.file.filename}`)
+            }
+                res.send({
+                    err: true,
+                    message: err.message
+                })
         }
     }
     // deleteUser: async (req, res) => {

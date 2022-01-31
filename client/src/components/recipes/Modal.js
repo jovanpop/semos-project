@@ -1,41 +1,58 @@
 import React from "react";
-import { Card, Button, Modal } from "react-bootstrap";
-import { BsClock, GiMeal, BsStar,HiChevronDoubleRight } from "react-icons/all";
+import { Card, Modal, Image, Col, Row,Container} from "react-bootstrap";
+import { BsClock, GiMeal, BsStar, MdDoubleArrow } from "react-icons/all";
 import PropTypes from 'prop-types';
 import { api } from "../../constants/ApiConstants";
+
 
 export function ModalWindow(props) {
     const recipe = props.recipe
     function MyVerticallyCenteredModal(props) {
         return (
             <Modal
+            keyboard="true"
+            id="modal"
                 {...props}
-                size="lg"
+                size="xl"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 style={{
-                    backdropFilter: "blur(5px)"
+                    backdropFilter: "blur(15px)",
+                    transition:"opacity .4s ease",
+                    paddingBottom:"0%"
                 }}
             >
-                <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        {recipe.title}
+                <Container fluid="true" style={{padding:"2%",paddingBottom:"0",marginBottom:"0"}}>
+                <Modal.Header id="modalHeader" closeButton>
+                    <Modal.Title >
+                        <h2><textarea  disabled id="modalTitle" rows={1} value={recipe.title}></textarea></h2>
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <Card style={{ width: '24rem', borderRadius: "2%" }}>
-                        <Card.Img style={{ borderTopLeftRadius: "2%", borderTopRightRadius: "2%" }} variant="top" src="https://media.istockphoto.com/photos/cheesy-pepperoni-pizza-picture-id938742222?k=20&m=938742222&s=612x612&w=0&h=X5AlEERlt4h86X7U7vlGz3bDaDDGQl4C3MuU99u2ZwQ=" />
-                        <Card.Body >
-                            <Card.Title>Best Served For<span style={{backgroundColor:"green",borderRadius:"20%/50%",padding:"1%",color:"white",opacity:"0.8",paddingLeft:"2%",paddingRight:"2%",paddingBottom:"1.5%"}}>{recipe.category.toLowerCase()}</span></Card.Title>
-                            <Card.Text>
-                                {recipe.content}
-                            </Card.Text>
-                            <BsClock /> <span>{recipe.preparation}</span>
-                            <GiMeal /> <span>{recipe.people}</span>
-                            <BsStar /> <span>{recipe.views}</span>
-                        </Card.Body>
-                    </Card>
+                <Modal.Body id="modalBody">
+                    <Row>
+                        <Col xs={5}>
+                            <Card id="cardModal" >
+                                <Card.Img /><Image id="modalImage" variant="top" src={`${api.root}/${recipe.image}`} />
+                                <Card.Body id="modalCardBody">
+                                    <Card.Title id="modalCategory">Best Served For<span>{recipe.category.toLowerCase()}</span></Card.Title>
+                                    <Card.Text id="modalText">
+                                        <textarea disabled rows={6} value={recipe.content}></textarea>
+                                    </Card.Text>
+                                    <Card.Footer id="modalFooter">
+                                        <span > <BsClock id="modalIcons" /> {recipe.preparation} min </span>
+                                        <span > <GiMeal id="modalIcons" /> {recipe.people} persons </span>
+                                        <span > <BsStar id="modalIcons" /> {recipe.views} </span>
+                                    </Card.Footer>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col id="modalDesc" xs={7}>
+                            <div>Recipe Details</div>
+                            <textarea disabled style={{width:"100%"}} rows={20} value={recipe.description}></textarea>
+                        </Col>
+                    </Row>
                 </Modal.Body>
+                </Container>
             </Modal>
         );
     }
@@ -47,9 +64,7 @@ export function ModalWindow(props) {
     const [modalShow, setModalShow] = React.useState(false);
     return (
         <>
-            <Button style={{ position: "absolute", right: "3%", bottom: "3%" }} variant="success" onClick={() => { setModalShow(true); updateViews() }}>
-                <HiChevronDoubleRight/>
-            </Button>
+            <MdDoubleArrow id="modalButton" onClick={() => { setModalShow(true); updateViews() }} />
             <MyVerticallyCenteredModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}

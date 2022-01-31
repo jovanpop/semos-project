@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, Button, Row, Col, Form, Image } from "react-bootstrap";
 import { api } from "../../constants/ApiConstants";
+import { PopAlert } from "../partials/Alert";
 import { IoArrowUndoCircle } from "react-icons/all";
 
 export function CreateRecipe() {
@@ -10,7 +11,10 @@ export function CreateRecipe() {
     const [people, setPeople] = useState("");
     const [content, setContent] = useState("");
     const [description, setDescription] = useState("");
-    const [image, setImage] = useState("https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900");
+    const [image, setImage] = useState(`${api.root}/images/recipes/recipe.png`);
+    const [Alert, setAlert] = useState(false);
+    const [alertMsg, setAlertMsg] = useState("");
+    const [error, setError] = useState(false);
 
     function handleImage(e) {
         const reader = new FileReader();
@@ -45,34 +49,47 @@ export function CreateRecipe() {
         })
             .then(res => {
                 if (res.status === 401) {
-                    alert("Token expired");
+                    setError(true);
+                    setAlert(true);
+                    setAlertMsg("Token");
                     localStorage.removeItem("token");
-                    window.location = "/login";
-                }
+                }else{
                 return res.json();
+            }
             })
             .then(data => {
-                if (data.err === true) {
-                    alert(data.message)
+                if (data){
+                if (data.err === false) {
+                    setError(false);
+                    setAlert(true);
+                    setAlertMsg(data.message);
+                    setTimeout(() =>{window.location = "/myrecipes"},1000);
                 } else {
-                    window.location = "/myrecipes";
-                }
+                    setError(true);
+                    setAlert(true);
+                    setAlertMsg(data.message);
+                }}
             })
-            .catch(err => { if (err) { console.log(err) } })
+            .catch(err => {
+                setError(true);
+                setAlert(true);
+                setAlertMsg(err);
+            })
     }
     return (
-        <Container>
+        <Container fluid="true">
+            <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
             <Row>
                 <Col><h2 style={{marginRight:"-20px"}} id="pageTitle">Create Recipe</h2></Col>
-                <Col style={{ textAlign: "end",width:"5%"}} sm={1}><a href="/myrecipes"><IoArrowUndoCircle style={{ color: "orange",fontSize:"320%", marginTop:"-5px"}} /></a></Col>
+                <Col style={{ textAlign: "end",width:"5%"}} sm={1}><a href="/myrecipes"><IoArrowUndoCircle style={{ color: "orange",fontSize:"310%", marginTop:"-5px"}} /></a></Col>
             </Row>
             <Form onSubmit={createMyRecipe} >
                 <Row style={{ marginTop: "7%" }}>
                     <Col sm={2}>
                         <Row style={{ height: "34%", width: "130%" }} >
                             <Form.Label id="inputLabel">Recipe Image</Form.Label>
-                            <Image src={image} style={{ height: "100%", width: "100%", borderRadius: "7%" }} />
-                            <Button onClick={() => document.getElementById("fileinput").click()} style={{ width: "90%", margin: "auto", marginTop: "10%" }} variant="outline-secondary">UPLOAD IMAGE</Button>
+                            <Image src={image} style={{ height: "100%", width: "100%", borderRadius: "7%",objectFit:"cover" }} />
+                            <Button  id="uploadButton" onClick={() => document.getElementById("fileinput").click()} style={{ width: "90%", margin: "auto", marginTop: "8%" }} variant="outline-secondary">UPLOAD IMAGE</Button>
                             <Form.Control type="file" onChange={handleImage} accept="image/*" id="fileinput" style={{ display: "none" }} />
                         </Row>
                     </Col>
@@ -94,11 +111,11 @@ export function CreateRecipe() {
                             </Col>
                             <Col>
                                 <Form.Label id="inputLabel">Preparation Time</Form.Label>
-                                <Form.Control required id="inputField" placeholder="45" onChange={(e) => setPreparation(e.target.value)} value={preparation} type="number" />
+                                <Form.Control required id="inputField" placeholder="45" min="1" max="1440" onChange={(e) => setPreparation(e.target.value)} value={preparation} type="number" />
                             </Col>
                             <Col>
                                 <Form.Label id="inputLabel">No. People</Form.Label>
-                                <Form.Control required id="inputField" placeholder="4" onChange={(e) => setPeople(e.target.value)} value={people} type="number" />
+                                <Form.Control required id="inputField" placeholder="4" min="1" max="99" onChange={(e) => setPeople(e.target.value)} value={people} type="number" />
                             </Col>
                         </Row>
                         <Row className="mb-4">
@@ -112,6 +129,7 @@ export function CreateRecipe() {
                                     required
                                     style={{resize: "none"}}
                                     type="text"
+                                    maxLength="230"
                                 />
                             </Col>
                             <Row style={{ margin: "auto", marginTop: "6%" }}>
@@ -127,7 +145,7 @@ export function CreateRecipe() {
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             required
-                            style={{resize: "none"}}
+                            style={{resize: "none",height:"70%"}}
                             type="text"
                         />
                     </Col>

@@ -19,7 +19,7 @@ const token=localStorage.getItem("token");
 export function App() {
   return (
     <div id="body">
-      <Container >
+      <Container  style={{minHeight:"750px"}}>
         <Navigation />
         <Routes >
           <Route path="/" element={<Home />} />

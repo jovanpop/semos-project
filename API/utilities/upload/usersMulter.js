@@ -8,7 +8,8 @@ const storageUsers= multer.diskStorage({
         cb(null,path)
     },
     filename:function(req,file,cb){
-        const fileName= `${req.user.id}-${file.originalname}`;
+        const uniqueTime = new Date().toISOString().replace(/:/g, '-');
+        const fileName= `${uniqueTime}-${file.originalname}`;
         cb(null,fileName);
     }
 })
