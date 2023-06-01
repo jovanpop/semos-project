@@ -1,3 +1,3 @@
 export const api={
-    root:'http://localhost:5000'
+    root:'https://semosfoodplaceapi.onrender.com'
 }
