@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Button, Row, Col, Form, Image } from "react-bootstrap";
 import { api } from "../../constants/ApiConstants";
 import { PopAlert } from "../partials/Alert";
-import { IoArrowUndoCircle } from "react-icons/all";
+import { IoArrowUndoCircle } from "react-icons/io5";
 
 export function CreateRecipe() {
     const [title, setTitle] = useState("");

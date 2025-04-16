@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row,Col } from "react-bootstrap";
 import { api } from "../../constants/ApiConstants";
-import { BsFillPlusCircleFill, FaTrashAlt } from "react-icons/all";
+import { BsFillPlusCircleFill } from "react-icons/bs";
+import { FaTrashAlt } from "react-icons/fa";
 import { PopAlert } from "../partials/Alert";
 
 export function MyRecipes() {

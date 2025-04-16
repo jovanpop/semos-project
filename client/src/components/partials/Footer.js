@@ -1,6 +1,7 @@
 import React from "react";
 import { Nav,Navbar, Container, Image} from 'react-bootstrap';
-import {AiOutlineCopyrightCircle,VscCircleFilled} from "react-icons/all"
+import { VscCircleFilled } from "react-icons/vsc";
+import { AiOutlineCopyrightCircle } from "react-icons/ai";
 import logo from "../../assets/images/footerLogo.svg";
 
 export function Footer() {

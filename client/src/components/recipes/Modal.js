@@ -1,6 +1,9 @@
 import React from "react";
 import { Card, Modal, Image, Col, Row,Container} from "react-bootstrap";
-import { BsClock, GiMeal, BsStar, MdDoubleArrow } from "react-icons/all";
+import { BsClock, BsStar } from "react-icons/bs";
+import { GiMeal } from "react-icons/gi";
+import { MdDoubleArrow } from "react-icons/md";
+
 import PropTypes from 'prop-types';
 import { api } from "../../constants/ApiConstants";
 

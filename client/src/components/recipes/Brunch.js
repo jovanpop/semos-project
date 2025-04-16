@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card, Row, Col, Image } from "react-bootstrap";
-import { BsClock, GiMeal, BsStar } from "react-icons/all";
+import { BsClock, BsStar } from "react-icons/bs";
+import { GiMeal } from "react-icons/gi";
 import { api } from "../../constants/ApiConstants";
 import { ModalWindow } from './Modal';
 
