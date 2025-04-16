@@ -13,7 +13,10 @@ export function Lunch() {
             .then(data => {
                 setLunch(data.recipes)
             })
-            .catch(err => alert(err));
+            .catch(err => {
+                console.log(err);
+                alert("Ooops something went wrong. Please try again later.");
+            });
     }
     useEffect(() => {
         getLunch();

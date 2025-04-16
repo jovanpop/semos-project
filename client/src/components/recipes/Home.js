@@ -15,7 +15,10 @@ export function Home() {
                 setPopularRecipes(data.PopularRecipes)
                 setNewRecipes(data.NewRecipes)
             })
-            .catch(err => alert(err));
+            .catch(err => {
+                console.log(err);
+                alert("Ooops something went wrong. Please try again later.");
+            });
     }
     useEffect(() => {
         getHomePage();

@@ -136,7 +136,7 @@ export function MyProfile() {
             catch {
                 setError(true);
                 setAlert(true);
-                setAlertMsg("Ooops something went wrong");
+                setAlertMsg("Ooops something went wrong. Please try again later.");
             }
         } else {
             setError(true);

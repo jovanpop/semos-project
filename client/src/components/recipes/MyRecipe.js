@@ -124,7 +124,7 @@ export function MyRecipe() {
         catch { 
             setAlert(true);
             setError(true);
-            setAlertMsg("Ooops something went wrong")}
+            setAlertMsg("Ooops something went wrong. Please try again later.")}
     }
 
     return (

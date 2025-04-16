@@ -62,7 +62,10 @@ export function ModalWindow(props) {
     function updateViews() {
         fetch(`${api.root}/recipes/recipe/${recipe._id}`)
             .then(res => res.json())
-            .catch(err => alert(err))
+            .catch(err => {
+                console.log(err);
+                alert("Ooops something went wrong. Please try again later.");
+            });
     }
     const [modalShow, setModalShow] = React.useState(false);
     return (
