@@ -39,7 +39,7 @@ module.exports = {
                 email: user.email,
                 first_name: user.first_name
             }
-            token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2m" });
+            token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "10m" });
             res.send({
                 err: false,
                 message: "User logged in ",

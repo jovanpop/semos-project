@@ -29,7 +29,7 @@ export function MyRecipe() {
         reader.readAsDataURL(e.target.files[0])
     }
 
-    function getRecipe() {
+    function getRecipe(id) {
         fetch(`${api.root}/recipes/myrecipes/${id}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -69,8 +69,8 @@ export function MyRecipe() {
             });
     }
     useEffect(() => {
-        getRecipe();
-    }, [])
+        getRecipe(id);
+    }, [id])
 
     function updateRecipe(e) {
         e.preventDefault();

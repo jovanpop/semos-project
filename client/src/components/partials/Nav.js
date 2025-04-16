@@ -1,6 +1,6 @@
 import React from "react";
 import { Nav, Navbar, Container, Image, Button } from 'react-bootstrap';
-import { api } from "../../constants/ApiConstants";
+// import { api } from "../../constants/ApiConstants";
 import logo from "../../assets/images/logo.svg";
 import { VscCircleFilled } from "react-icons/vsc";
 
