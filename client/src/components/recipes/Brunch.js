@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Row, Col, Image } from "react-bootstrap";
+import { Container, Card, Row, Col, Image, Spinner } from "react-bootstrap";
 import { BsClock, BsStar } from "react-icons/bs";
 import { GiMeal } from "react-icons/gi";
 import { api } from "../../constants/ApiConstants";
@@ -7,10 +7,12 @@ import { ModalWindow } from './Modal';
 
 export function Brunch() {
     const [Brunch, setBrunch] = useState([]);
+    const [loading, setLoading] = useState(true);
     function getBrunch() {
         fetch(`${api.root}/recipes/Brunch`)
             .then(res => res.json())
             .then(data => {
+                setLoading(false);
                 setBrunch(data.recipes)
             })
             .catch(err => {
@@ -21,6 +23,11 @@ export function Brunch() {
     useEffect(() => {
         getBrunch();
     }, []);
+
+    if (loading) {
+        return <div id="page-loading" ><Spinner animation="border" id="loading-spinner" />Loading...</div>
+    }
+
     return (
         <Container fluid="true">
             <Row><h2 id="pageTitle" style={{ marginBottom: "4%" }}>Brunch</h2></Row>

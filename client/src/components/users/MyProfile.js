@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Row, Col, Form, Image } from "react-bootstrap";
+import { Container, Button, Row, Col, Form, Image, Spinner } from "react-bootstrap";
 import { api } from "../../constants/ApiConstants";
 import { PopAlert } from "../partials/Alert";
 const bcrypt = require("bcryptjs");
 
 export function MyProfile() {
+    const [loading, setLoading] = useState(true);
     const [first_name, setFirst_name] = useState("");
     const [last_name, setLast_name] = useState("");
     const [email, setEmail] = useState("");
@@ -50,6 +51,7 @@ export function MyProfile() {
             .then(data => {
                 if (data) {
                     if (data.err === false) {
+                        setLoading(false);
                         setFirst_name(data.user.first_name);
                         setLast_name(data.user.last_name);
                         setEmail(data.user.email);
@@ -144,6 +146,10 @@ export function MyProfile() {
             setAlertMsg("Password");
             setTimeout(() => { setAlert(false); setError(false) }, 1500)
         }
+    }
+
+    if (loading) {
+        return <div id="page-loading" ><Spinner animation="border" id="loading-spinner" />Loading...</div>
     }
 
     return (

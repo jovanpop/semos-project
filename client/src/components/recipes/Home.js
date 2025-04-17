@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Row, Col, Image } from "react-bootstrap";
+import { Container, Card, Row, Col, Image, Spinner } from "react-bootstrap";
 import { BsClock, BsStar } from "react-icons/bs";
 import { GiMeal } from "react-icons/gi";
 import { api } from "../../constants/ApiConstants";
@@ -20,6 +20,7 @@ export function Home() {
                 alert("Ooops something went wrong. Please try again later.");
             });
     }
+    
     useEffect(() => {
         getHomePage();
     }, [])

@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Row, Col, Image } from "react-bootstrap";
+import { Container, Card, Row, Col, Image, Spinner } from "react-bootstrap";
 import { BsClock, BsStar } from "react-icons/bs";
 import { GiMeal } from "react-icons/gi";
 import { api } from "../../constants/ApiConstants";
 import { ModalWindow } from './Modal';
 
 export function Dinner() {
+    const [loading, setLoading] = useState(true);
     const [Dinner, setDinner] = useState([]);
     function getDinner() {
         fetch(`${api.root}/recipes/Dinner`)
             .then(res => res.json())
             .then(data => {
+                setLoading(false);
                 setDinner(data.recipes)
             })
             .catch(err => {
@@ -21,6 +23,11 @@ export function Dinner() {
     useEffect(() => {
         getDinner();
     }, []);
+
+    if (loading) {
+        return <div id="page-loading" ><Spinner animation="border" id="loading-spinner" />Loading...</div>
+    }
+
     return (
         <Container fluid="true">
             <Row><h2 id="pageTitle" style={{ marginBottom: "4%" }}>Dinner</h2></Row>

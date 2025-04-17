@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Row, Col, Form, Image } from "react-bootstrap";
+import { Container, Button, Row, Col, Form, Image, Spinner } from "react-bootstrap";
 import { IoArrowUndoCircle } from "react-icons/io5";
 import { api } from "../../constants/ApiConstants";
 import { useParams } from "react-router-dom";
@@ -8,6 +8,7 @@ import { PopAlert } from "../partials/Alert";
 export function MyRecipe() {
 
     const { id } = useParams();
+    const [loading, setLoading] = useState(true);
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
     const [preparation, setPreparation] = useState("");
@@ -48,6 +49,7 @@ export function MyRecipe() {
             .then(data => {
                 if(data) {
                 if (data.err === false){
+                setLoading(false);
                 setTitle(data.recipe.title)
                 setCategory(data.recipe.category)
                 setPreparation(data.recipe.preparation)
@@ -127,11 +129,15 @@ export function MyRecipe() {
             setAlertMsg("Ooops something went wrong. Please try again later.")}
     }
 
+    if (loading) {
+        return <div id="page-loading" ><Spinner animation="border" id="loading-spinner" />Loading...</div>
+    }
+
     return (
         <Container fluid="true">
             <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
             <Row>
-                <Col><h2 style={{ marginRight: "-20px" }} id="pageTitle">My Recipes</h2></Col>
+                <Col><h2 style={{ marginRight: "-20px" }} id="pageTitle">My Recipe</h2></Col>
                 <Col style={{ textAlign: "end", width: "5%" }} sm={1}><a href="/myrecipes"><IoArrowUndoCircle style={{ color: "orange", fontSize: "310%", marginTop: "-5px" }} /></a></Col>
             </Row>
             <Form onSubmit={updateRecipe} >
