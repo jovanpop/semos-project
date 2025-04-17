@@ -15,11 +15,6 @@ export function Register() {
     const [alertMsg, setAlertMsg] = useState("");
     const [error, setError] = useState(false);
 
-    window.onload = () => {
-        const pastedText = document.getElementById("confirmPW");
-        pastedText.onpaste = (e) => { e.preventDefault() }
-    }
-
     function postUser(e) {
         e.preventDefault();
         let user = {
@@ -72,6 +67,7 @@ export function Register() {
             setTimeout(() => { setAlert(false); setError(false) }, 1500);
         }
     }
+    
     return (
         <Container fluid="true" id="container">
             <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
@@ -112,7 +108,7 @@ export function Register() {
                             </Col>
                             <Col>
                                 <Form.Label id="inputLabel">Repeat password</Form.Label>
-                                <Form.Control id="confirmPW" required onChange={(e) => setConfirmPW(e.target.value)} value={confirmPW} type="password" placeholder="*****" />
+                                <Form.Control id="confirmPW" required onPaste={(e)=> e.preventDefault()} onChange={(e) => setConfirmPW(e.target.value)} value={confirmPW} type="password" placeholder="*****" />
                             </Col>
                         </Row>
                         <Button type="submit" style={{ fontSize: "13px", width: "32%", marginTop: "4%" }} id="greenButton" variant="success">CREATE ACCOUNT</Button>

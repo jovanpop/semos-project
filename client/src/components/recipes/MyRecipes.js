@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Spinner } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { api } from "../../constants/ApiConstants";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { FaTrashAlt } from "react-icons/fa";
 import { PopAlert } from "../partials/Alert";
+import { Loading } from "../partials/Loading";
 
 export function MyRecipes() {
     const [loading, setLoading] = useState(true);
@@ -85,7 +86,7 @@ export function MyRecipes() {
     }
     
     if (loading) {
-        return <div id="page-loading" ><Spinner animation="border" id="loading-spinner" />Loading...</div>
+        return <Loading />
     }
 
     return (

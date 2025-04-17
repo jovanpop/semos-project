@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Row, Col, Form, Image, Spinner } from "react-bootstrap";
+import { Container, Button, Row, Col, Form, Image } from "react-bootstrap";
 import { IoArrowUndoCircle } from "react-icons/io5";
 import { api } from "../../constants/ApiConstants";
 import { useParams } from "react-router-dom";
 import { PopAlert } from "../partials/Alert";
+import { Loading } from "../partials/Loading";
 
 export function MyRecipe() {
 
@@ -130,7 +131,7 @@ export function MyRecipe() {
     }
 
     if (loading) {
-        return <div id="page-loading" ><Spinner animation="border" id="loading-spinner" />Loading...</div>
+        return <Loading />
     }
 
     return (

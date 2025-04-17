@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Row, Col, Image, Spinner } from "react-bootstrap";
+import { Container, Card, Row, Col, Image } from "react-bootstrap";
 import { BsClock, BsStar } from "react-icons/bs";
 import { GiMeal } from "react-icons/gi";
 import { api } from "../../constants/ApiConstants";
 import { ModalWindow } from './Modal';
+import { Loading } from "../partials/Loading";
 
 export function Home() {
+    const [loading, setLoading] = useState(true);
     const [NewRecipes, setNewRecipes] = useState([]);
     const [PopularRecipes, setPopularRecipes] = useState([]);
     function getHomePage() {
         fetch(api.root)
             .then(res => res.json())
             .then(data => {
+                setLoading(false);
                 setPopularRecipes(data.PopularRecipes)
                 setNewRecipes(data.NewRecipes)
             })
@@ -24,6 +27,10 @@ export function Home() {
     useEffect(() => {
         getHomePage();
     }, [])
+
+    if (loading) {
+        return <Loading/>
+    }
 
     return (
         <Container fluid="true">

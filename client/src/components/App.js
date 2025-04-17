@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React from "react";
 import { Route, Routes,Navigate } from "react-router-dom";
 import { Navigation } from './partials/Nav';
 import { Footer } from "./partials/Footer";
@@ -14,33 +14,15 @@ import { Login } from "./users/Login";
 import { Register } from "./users/Register";
 import { MyProfile } from './users/MyProfile';
 import { Container } from "react-bootstrap";
-import { Loading } from "./partials/Loading";
-import { api } from "../constants/ApiConstants";
 const token=localStorage.getItem("token");
 
 export function App() {
-  const [loading, setLoading] = useState(true);
-
-  function checkDbConnection () {
-    fetch(api.root)
-      .then(setLoading(false))
-      .catch(err => {
-        setLoading(false);
-        alert("Ooops something went wrong. Please try again later.");
-        console.log(err);
-      })
-  }
-
-  useEffect(() => {
-    checkDbConnection();
-  } , []);
-
   return (
     <div id="body">
       <Container  style={{minHeight:"750px"}}>
         <Navigation />
         <Routes >
-          <Route path="/" element={loading ? <Loading/> : <Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/breakfast" element={<Breakfast />} />
           <Route path="/brunch" element={<Brunch />} />
           <Route path="/lunch" element={<Lunch />} />

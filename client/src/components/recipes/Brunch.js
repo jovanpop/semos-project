@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Row, Col, Image, Spinner } from "react-bootstrap";
+import { Container, Card, Row, Col, Image } from "react-bootstrap";
 import { BsClock, BsStar } from "react-icons/bs";
 import { GiMeal } from "react-icons/gi";
 import { api } from "../../constants/ApiConstants";
 import { ModalWindow } from './Modal';
+import { Loading } from "../partials/Loading";
 
 export function Brunch() {
-    const [Brunch, setBrunch] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [Brunch, setBrunch] = useState([]);
     function getBrunch() {
         fetch(`${api.root}/recipes/Brunch`)
             .then(res => res.json())
@@ -25,7 +26,7 @@ export function Brunch() {
     }, []);
 
     if (loading) {
-        return <div id="page-loading" ><Spinner animation="border" id="loading-spinner" />Loading...</div>
+        return <Loading/>
     }
 
     return (

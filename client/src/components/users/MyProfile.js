@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Row, Col, Form, Image, Spinner } from "react-bootstrap";
+import { Container, Button, Row, Col, Form, Image } from "react-bootstrap";
 import { api } from "../../constants/ApiConstants";
 import { PopAlert } from "../partials/Alert";
+import { Loading } from "../partials/Loading";
 const bcrypt = require("bcryptjs");
 
 export function MyProfile() {
@@ -16,11 +17,6 @@ export function MyProfile() {
     const [Alert, setAlert] = useState(false);
     const [alertMsg, setAlertMsg] = useState("");
     const [error, setError] = useState(false);
-
-    window.onload = () => {
-        const pastedText = document.getElementById("confirmPW");
-        pastedText.onpaste = (e) => { e.preventDefault() }
-    }
 
     function handleImage(e) {
         const reader = new FileReader();
@@ -149,7 +145,7 @@ export function MyProfile() {
     }
 
     if (loading) {
-        return <div id="page-loading" ><Spinner animation="border" id="loading-spinner" />Loading...</div>
+        return <Loading />
     }
 
     return (
@@ -196,7 +192,7 @@ export function MyProfile() {
                             </Col>
                             <Col  >
                                 <Form.Label id="inputLabel">Repeat password</Form.Label>
-                                <Form.Control id="confirmPW" onChange={(e) => setConfirmPW(e.target.value)} value={confirmPW} placeholder="******" type="password" />
+                                <Form.Control id="confirmPW" onPaste={(e)=> e.preventDefault()} onChange={(e) => setConfirmPW(e.target.value)} value={confirmPW} placeholder="******" type="password" />
                             </Col>
                             <Row style={{ margin: "auto", marginTop: "5%" }} sm={5}>
                                 <Button type="submit" id="greenButton" style={{ width: "20%" }} variant="success">SAVE</Button>

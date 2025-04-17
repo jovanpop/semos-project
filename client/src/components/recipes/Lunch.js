@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Row, Col, Image, Spinner } from "react-bootstrap";
+import { Container, Card, Row, Col, Image } from "react-bootstrap";
 import { BsClock, BsStar } from "react-icons/bs";
 import { GiMeal } from "react-icons/gi";
 import { api } from "../../constants/ApiConstants";
 import { ModalWindow } from './Modal';
+import { Loading } from "../partials/Loading";
 
 export function Lunch() {
     const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ export function Lunch() {
     }, []);
 
     if (loading) {
-        return <div id="page-loading" ><Spinner animation="border" id="loading-spinner" />Loading...</div>
+        return <Loading/>
     }
     
     return (

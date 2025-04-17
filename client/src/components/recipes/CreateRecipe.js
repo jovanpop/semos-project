@@ -76,6 +76,7 @@ export function CreateRecipe() {
                 setAlertMsg(err);
             })
     }
+    
     return (
         <Container fluid="true">
             <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
