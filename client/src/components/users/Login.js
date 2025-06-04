@@ -4,6 +4,7 @@ import { api } from "../../constants/ApiConstants";
 import { PopAlert } from "../partials/Alert";
 const bcrypt = require("bcryptjs");
 
+
 export function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -47,6 +48,7 @@ export function Login() {
     
     return (
         <Container fluid="true" id="container">
+            <style>{` @media(max-width: 992px){ .row{ flex-direction: column} .col{ width:100% !important} .col-4{margin-top:30px; width: 100% !important;}} }  `}</style>
             <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
             <Row><h2 id="pageTitle">Log in</h2></Row>
             <Row style={{ marginTop: "7%" }}>

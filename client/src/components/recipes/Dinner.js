@@ -32,9 +32,9 @@ export function Dinner() {
     return (
         <Container fluid="true">
             <Row><h2 id="pageTitle" style={{ marginBottom: "4%" }}>Dinner</h2></Row>
-            <Row style={{ width: "105%" }} md={3} className="g-5">
+            <Row style={{ width: "105%" }} xs={1} md={3} className="g-5">
                 {Dinner.map(recipe => (
-                    <Col key={recipe._id} style={{ marginBottom: "1%" }}>
+                    <Col key={recipe._id} >
                         <Card id="card" >
                             <Card.Img /><Image id="cardImage" variant="top" src={`${api.root}/${recipe.image}`} />
                             <Card.Body id="cardBody">

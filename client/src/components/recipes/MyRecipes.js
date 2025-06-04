@@ -95,7 +95,7 @@ export function MyRecipes() {
             <Row >
                 <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
                 <Col><h2 id="pageTitle">My Recipes</h2></Col>
-                <Col style={{ textAlign: "end", width: "4.7%" }} sm={1}><a href="/create"><BsFillPlusCircleFill style={{ color: "orange", fontSize: "250%" }} /></a></Col>
+                <Col style={{ textAlign: "end", width: "fit-content" }} sm={1}><a href="/create"><BsFillPlusCircleFill style={{ color: "orange", fontSize: "250%" }} /></a></Col>
             </Row>
             <Row style={{ marginTop: "4%", marginLeft: "1%", height: "100%" }}>
                 {recipes.length !== 0 ? <Row id="tableHead">

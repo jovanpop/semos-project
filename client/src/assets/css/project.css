@@ -1,3 +1,6 @@
+#root{
+    overflow-x: hidden;
+}
 #inputFieldEmail{
     background-color: rgb(240, 240 , 238);
     border: 1px solid rgb(181, 181, 181);
@@ -63,6 +66,8 @@
     color: darkgray;
     font-size: 14px;
     height: 23%;
+    min-height: fit-content;
+    min-width: fit-content;
 }
 #uploadButton:hover{
     color: white;
@@ -76,6 +81,8 @@
     font-weight: bold;
     width: 120%;
     height: 37px;
+    min-height: fit-content;
+    min-width: fit-content;
 }
 #greenButton:hover{
     background-color: gray;
@@ -93,7 +100,13 @@
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     letter-spacing: 1px;
-    margin-right: 0.5%;
+    align-items: baseline;
+    width: 100%;
+    margin-left: 15%;
+}
+#secondary-links{
+    letter-spacing: 1px;
+    min-width: fit-content;
 }
 #loginButton{
     background-color:  transparent;
@@ -285,6 +298,7 @@ input[type="password"]::-webkit-input-placeholder {
     padding-left: 3%;
     border-radius: 5%/20%;
     margin-bottom: 0;
+    max-height: fit-content;
 }
 #recipeTitle{
     border: none;
@@ -297,6 +311,9 @@ input[type="password"]::-webkit-input-placeholder {
     margin-top: 3%;
     background-color: transparent;
 }
+.modal-title{
+    flex-basis: 85%;
+}
 #modalTitle{
     font-weight: 600;
     font-family: 'Roboto Slab', serif;
@@ -304,9 +321,10 @@ input[type="password"]::-webkit-input-placeholder {
     font-size: 38px;
     resize: none;
     border: none;
-    overflow: hidden;
+    overflow: overlay;
     background-color: transparent;
     margin-top: 2%;
+    width: 100%; ;
 }
 #modalHeader{
     border: none;
@@ -423,6 +441,128 @@ input[type="password"]::-webkit-input-placeholder {
     position: absolute;
     left: -50px;
     top: 0;
+}
+
+#basic-navbar-nav hr{
+    display: none;
+    color: lightgray;
+    opacity: 1;
+}
+
+@media (max-width: 1399px) {
+    #links{
+        margin-left: 7.5%;
+    }
+}
+
+@media (max-width: 1199px) {
+
+    .navbar .container #links{
+        font-size: 14px !important;
+    }
+    
+    .col {
+        width: 50% !important;
+    }
+
+    .navbar-nav{
+        margin-left: 0 !important;
+    }
+
+    #loginButton {
+        font-size: 14px !important;
+    }
+
+    #greenButton {
+        font-size: 14px !important;
+    }
+}
+
+@media (max-width: 991px){
+    #basic-navbar-nav {
+        transition: height 0.3s ease-in-out;
+    }
+    #links a{
+        width: 25%;
+        align-self: center;
+        text-align: center;
+    }
+    #links svg {
+        display: none;
+    }
+    #secondary-links {
+        align-items: center;
+    }
+    #secondary-links button a{
+        width: 50%;
+    }
+    #secondary-links svg{
+       display: none;
+    }
+    #secondary-links button{
+        margin: 0 !important;
+        width: 100%;
+    }
+    #secondary-links span{
+        margin: 0 !important;
+    }
+    #basic-navbar-nav hr{
+        display: block;
+    }
+    #footer svg{
+        display: none;
+    }
+    #footerLinks {
+        flex-direction: column;
+    }
+    #footerLinks a{
+        font-size: 12px;
+        text-align: center;
+        width: 100%;
+        padding: 6px;
+    }
+    .modal-dialog {
+        max-width: 720px !important;
+    }
+    .col .card{
+        width: 100% !important;
+        margin-right: 0 !important;
+    }
+}
+
+@media (max-width: 767px){
+    .col {
+        width: 100% !important;
+        padding-right: 0 !important;
+    }
+    .col .card{
+        width: 100% !important;
+        margin-right: 0 !important;
+    }
+    .modal-body .row{
+        flex-direction: column !important;
+    }
+    .modal-body .col-5{
+        width: 100% !important;
+    }
+    .modal-body #modalDesc{
+        width: 100% !important;
+        margin: 10px 0 !important;
+    }
+    .modal-body #modalDesc textarea{
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+    #cardModal #modalFooter{
+        width: 100% !important;
+        text-align: center;
+        margin: 0 !important;
+        padding: 0 !important;
+        margin-left: 1% !important;
+    }
+    #modalTitle{
+        font-size: 30px !important;
+    }
 }
 
 
