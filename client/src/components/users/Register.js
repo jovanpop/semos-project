@@ -70,8 +70,8 @@ export function Register() {
     
     return (
         <Container fluid="true" id="container">
-            <style>{` @media(max-width: 992px){ .row{ flex-direction: column} .col-5{ padding-right: 0 !important; width:100% !important;} .col{margin-top:15px !important; width: 91% !important;}} }  `}</style>
             <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
+            <style>{` @media(max-width: 992px){ .row{ flex-direction: column} .col-5{ padding-right: 0 !important; width:100% !important;} .col{margin-top:15px !important; width: 91% !important;}} }  `}</style>
             <Row ><h2 id="pageTitle">Create Account</h2></Row>
             <Row fluid="true" style={{ marginTop: "7%" }}>
                 <Col style={{ paddingRight: "8%" }} xs={5}>

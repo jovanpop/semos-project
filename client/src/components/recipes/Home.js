@@ -57,7 +57,7 @@ export function Home() {
                     </Col>
                 ))}
             </Row>
-            <Row><h2 id="pageTitle" style={{ marginBottom: "4%", marginTop: "4%" }}>Most Popular Recipes</h2></Row>
+            <Row><h2 id="pageTitle" class="secondTitle" style={{ marginBottom: "4%", marginTop: "4%" }}>Most Popular Recipes</h2></Row>
             <Row  style={{ width: "105%"}} xs={2} md={3} className="g-5">
                 {PopularRecipes.map(recipe => (
                     <Col key={recipe._id} style={{marginBottom:"1%"}}>

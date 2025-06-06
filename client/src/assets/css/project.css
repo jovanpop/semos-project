@@ -438,9 +438,9 @@ input[type="password"]::-webkit-input-placeholder {
     width: fit-content;
 }
 #loading-spinner{
-    position: absolute;
-    left: -50px;
-    top: 0;
+    position: relative;
+    margin-right: 15px;
+    top: 6px;
 }
 
 #basic-navbar-nav hr{
@@ -476,6 +476,10 @@ input[type="password"]::-webkit-input-placeholder {
     #greenButton {
         font-size: 14px !important;
     }
+
+    #secondary-links svg{
+        display: none;
+    }
 }
 
 @media (max-width: 991px){
@@ -495,9 +499,6 @@ input[type="password"]::-webkit-input-placeholder {
     }
     #secondary-links button a{
         width: 50%;
-    }
-    #secondary-links svg{
-       display: none;
     }
     #secondary-links button{
         margin: 0 !important;
@@ -533,6 +534,8 @@ input[type="password"]::-webkit-input-placeholder {
 @media (max-width: 767px){
     .col {
         width: 100% !important;
+    }
+    .row-cols-md-3 .col{
         padding-right: 0 !important;
     }
     .col .card{
@@ -547,7 +550,7 @@ input[type="password"]::-webkit-input-placeholder {
     }
     .modal-body #modalDesc{
         width: 100% !important;
-        margin: 10px 0 !important;
+        margin: 10px 1% !important;
     }
     .modal-body #modalDesc textarea{
         width: 100% !important;
@@ -562,6 +565,9 @@ input[type="password"]::-webkit-input-placeholder {
     }
     #modalTitle{
         font-size: 30px !important;
+    }
+    .secondTitle{
+        margin-top: 10% !important;
     }
 }
 

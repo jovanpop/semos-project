@@ -97,7 +97,9 @@ export function MyRecipes() {
                 <Col><h2 id="pageTitle">My Recipes</h2></Col>
                 <Col style={{ textAlign: "end", width: "fit-content" }} sm={1}><a href="/create"><BsFillPlusCircleFill style={{ color: "orange", fontSize: "250%" }} /></a></Col>
             </Row>
-            <Row style={{ marginTop: "4%", marginLeft: "1%", height: "100%" }}>
+            <style>{` @media(max-width: 767px){ #recipesTable{ margin-left: 12px !important;} #tableHead{padding: 0 !important} #tableHead .col:nth-child(3) {margin-left:11% !important;}
+             #tableRow{padding: 0 !important} #tableRow .col-1{ padding:0 !important } #deleteButton{ margin:0 !important } #tableRow #tableCol:nth-child(3) {margin-left:11% !important;}}`}</style>
+            <Row style={{ marginTop: "4%", marginLeft: "1%", height: "100%" }} id="recipesTable">
                 {recipes.length !== 0 ? <Row id="tableHead">
                     <Col xs={3} >Recipe Name</Col>
                     <Col xs={2} style={{ marginLeft: "-3%" }}>Category</Col>

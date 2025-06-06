@@ -151,9 +151,13 @@ export function MyProfile() {
     return (
         <Container fluid="true" >
             <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
+            <style>{` @media(max-width: 1399px){ .col-sm-2 .row{ width:85% !important; margin-left:0 !important; } } @media(max-width: 1199px){ .col-sm-2 .row{ width:100% !important} } 
+             @media(max-width: 991px){.col-sm-2{ width:30% !important; margin:auto !important;} form #formRow{flex-direction:column; width:100% !important; margin: 0 !important} .col-sm-6{width:100% !important; margin: 30px 0 !important; padding:0 !important}}
+             @media(max-width: 767px){.col-sm-2{ width:30vh !important;} .mb-4{flex-direction:column;} .mb-4 .col{margin-top:5px} }
+             `}</style>
             <Row><h2 id="pageTitle">My Profile</h2></Row>
             <Form onSubmit={updateUser} >
-                <Row style={{ marginTop: "7%" }} >
+                <Row style={{ marginTop: "7%" }} id="formRow">
                     <Col sm={2}>
                         <Row style={{ height: "35%", width: "75%", marginLeft: "2%", marginTop: "-3%" }} >
                             <Form.Label></Form.Label>

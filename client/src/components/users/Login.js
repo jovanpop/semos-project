@@ -48,8 +48,8 @@ export function Login() {
     
     return (
         <Container fluid="true" id="container">
-            <style>{` @media(max-width: 992px){ .row{ flex-direction: column} .col{ width:100% !important} .col-4{margin-top:30px; width: 100% !important;}} }  `}</style>
             <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
+            <style>{` @media(max-width: 992px){ .row{ flex-direction: column} .col{ width:100% !important} .col-4{margin-top:30px; width: 100% !important;}} }  `}</style>
             <Row><h2 id="pageTitle">Log in</h2></Row>
             <Row style={{ marginTop: "7%" }}>
                 <Col style={{ marginRight: "10%" }}>
