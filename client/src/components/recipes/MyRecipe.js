@@ -137,12 +137,20 @@ export function MyRecipe() {
     return (
         <Container fluid="true">
             <PopAlert Alert={Alert} alertMsg={alertMsg} error={error} />
+            <style>{` @media(max-width: 1199px){ .row .col-sm-1{width: auto !important; } form .row .col-sm-5{margin-left: 3% !important; width: 49% !important;}}
+                      @media(max-width: 991px){ form #formRow{flex-direction:column; width:100% !important; margin: 0 !important;} .col-sm-5 .row{flex-direction: column !important;}
+                      form .row .col-sm-5{margin-left: 0% !important;margin-top: 1.5rem!important; width: 100% !important;order: 3;} .col-sm-5 .row .col{width: 100% !important; margin-top: 1.5rem!important;} 
+                        .mb-4{margin-bottom: 0 !important}
+                      form .row .col-sm-4{width: 100% !important; margin-left: 0 !important; order: 2; margin-top: 1.5rem !important;}
+                      form .row .col-sm-2{width: 100% !important; order: 1; align-items: center !important; padding: 0;} form .row .col-sm-2 .row{width: 100% !important; margin: 0;}
+                      }
+             `}</style>
             <Row>
                 <Col><h2 style={{ marginRight: "-20px" }} id="pageTitle">My Recipe</h2></Col>
                 <Col style={{ textAlign: "end", width: "5%" }} sm={1}><a href="/myrecipes"><IoArrowUndoCircle style={{ color: "orange", fontSize: "310%", marginTop: "-5px" }} /></a></Col>
             </Row>
             <Form onSubmit={updateRecipe} >
-                <Row style={{ marginTop: "7%" }}>
+                <Row style={{ marginTop: "7%" }} id="formRow">
                     <Col sm={2}>
                         <Row style={{ height: "34%", width: "130%" }} >
                             <Form.Label id="inputLabel">Recipe Image</Form.Label>
